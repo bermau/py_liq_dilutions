@@ -47,7 +47,7 @@ class Aliquot:
             return f"<Aliquot, vol : {self.volume} contenant {self.liquid}>"
 
     def describe(self):
-        common = f"  Tube de type {self.unit_type}"
+        common = f"Tube de type {self.unit_type}"
         if self.unit_type == 'ct':
             return common + f", CT : {self.ct}"
         else:
@@ -105,7 +105,7 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
     dilution_elementaire = dilution ** (1 / n_dil)
 
     if comment:
-        print(f"préparer une dilution finale au : {nice(dilution)}")
+        print(f"Préparer une dilution finale au : {nice(dilution)}")
 
     if n_dil == 1:
         dico = diluer(tube1, dilution=dilution, volume_final=vf, comment=True)
@@ -116,15 +116,16 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
         if lst_imposed_dil:
             # Verifier n_dil sup a liste
             assert len(lst_imposed_dil) < n_dil
+
             if comment:
-                print("Nous allons préparer les dilution imposées puis les libres")
+                print("Nous allons préparer les dilutions imposées puis les libres")
             # retour_tube = None  # {} # contiendra la succession des dilutions
             tube_en_cours_de_dil = tube
 
             for i in range(n_dil):
                 if i < len(lst_imposed_dil):
-                    print("\ndilution imposée", i + 1)
-                    print(f"   on dilue au 1/{lst_imposed_dil[i][0]} en volume de {lst_imposed_dil[i][1]} µl")
+                    print("\nDilution imposée", i + 1)
+                    print(f"   On dilue au 1/{lst_imposed_dil[i][0]} en volume de {lst_imposed_dil[i][1]} µl")
                     data_tube = diluer(tube_en_cours_de_dil, dilution=lst_imposed_dil[i][0],
                                          volume_final=lst_imposed_dil[i][1],
                                          tag="imposé_" + str(i + 1), comment=True)
@@ -136,9 +137,11 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
                     dils = [item[0] for item in lst_imposed_dil]
                     for dil in dils:
                         produit_des_dilutions *= dil
+
                     dilution_restante = dilution / produit_des_dilutions
                     print(f"\nLe produit des dilutions imposées est {produit_des_dilutions}. "
-                          f"Il reste une dilution au {dilution_restante}")
+                          f"Il reste une dilution au {dilution_restante}\n")
+                    assert produit_des_dilutions < dilution, "Dilution imposées trop importantes"
                     data_last_tube = diluer(tube_en_cours_de_dil, dilution=dilution_restante,
                                        volume_final=vf,
                                        tag="calculé_" + str(i + 1), comment=True)
@@ -148,7 +151,7 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
             if comment:
                 print(f"Nous allons préparer {n_dil} dilutions au {nice(dilution_elementaire)}")
             for i in range(0, n_dil):
-                print("dilution", i + 1)
+                print("Dilution", i + 1)
                 dico = diluer(tube, dilution=dilution_elementaire, tag='dil_' + str(i + 1), volume_final=vf,
                               comment=True)
                 list_dil.append(dico)

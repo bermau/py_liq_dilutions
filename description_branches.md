@@ -11,7 +11,10 @@ Fixed : Evolution des CT correcte.
 23_01_forcer_premieres_dilutions : je merge sur main (même si l'objectif est incomplet).
 
 ## 23_01_forcer_premieres_dilutions_suite
-La fonction dilution est capable de gérer des dilutions imposées. tout au moins pur les tubes exprimés en CT.
+La fonction dilution est capable de gérer des dilutions imposées. Tout au moins pur les tubes exprimés en CT.
 
-
+## 23_01_ameliorer_signature
+  * Améliorer la signature des différentes classes et fonctions (Il suffit en fait d'imposer un argument nommé dès le premier argument.
+    ). 
+  * protection contre les dilutions imposées supérieures à la dilution finale voulue. 
 
