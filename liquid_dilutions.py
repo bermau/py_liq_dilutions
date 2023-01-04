@@ -47,8 +47,11 @@ class Aliquot:
             return f"<Aliquot, vol : {self.volume} contenant {self.liquid}>"
 
     def describe(self):
-        return "  Description du tube fille :", self.unit_type, self.ct
-
+        common = f"  Tube de type {self.unit_type}"
+        if self.unit_type == 'ct':
+            return common + f", CT : {self.ct}"
+        else:
+            return common + f", CC : {self.concentration}"
 
 mater = Liquid("COVID_Pos")
 diluent = Liquid("Diluent")
