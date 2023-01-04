@@ -1,47 +1,49 @@
 import unittest
-import from  liquid_dilutions import *
+from  liquid_dilutions import *
 
 class MyTestCase(unittest.TestCase):
 
-    def test_a_cylinder_instance(self):
-        T1 = Cylinder(50, 11)
-        self.assertAlmostEqual(T1.height_for_volume(500), 5.26, 2)
-        self.assertAlmostEqual(T1.height_for_volume(4000), 42.09, 2)
+    def setUp(self) -> None:
+        self.mater = Liquid("COVID")
+        self.diluent = Liquid("Diluent")
+        self.tube_as_cc = Aliquot(mater, 200, 154)
+        self.tube_ct_mere = Aliquot(mater, 500, ct=20.5, unit_type='ct')
 
-    def test_a_instance(self):
-        part_sup2 = Cylinder(50, 10)
-        T = TubeAs2Parts(part_sup2)
-        self.assertAlmostEqual(T.height_for_volume(3000), 38.20, 2)
-        self.assertAlmostEqual(T.height_for_volume(500), 6.37, 2)
+    def test_presentation(self):
+        print(self.diluent)
 
-    def test_tube_as_parts_from_cylinder_and_conical(self):
-        my_top_part = Cylinder(50, 10)
-        my_bottom_part = reagents.Conical(10, 10)
-        T4 = TubeAs2Parts(my_top_part, my_bottom_part)
-        T4.describe()
-        self.assertAlmostEqual(T4.height_for_volume(100), 7.26, 2)
-        self.assertAlmostEqual(T4.height_for_volume(200), 9.14, 2)
-        self.assertAlmostEqual(T4.height_for_volume(1000), 15.63, 2)
+    def test_04_preparer_dilution_de_ct_imposant_dilutions(self):
+        print(f"\nSOLUTION DEPART {self.tube_ct_mere} \n")
+        fille0 = diluer(self.tube_ct_mere, 10, volume_final=300, tag='la_fille', comment= True)
+        res = preparer(220, 35, self.tube_ct_mere,  n_dil=3, lst_imposed_dil=[[100,200],[150,210]], comment=True  )
+        print()
+        print(res)
 
-    def test_apprixmation_tube(self):
-        T = standard_5ml_tube_approximation
-        self.assertAlmostEqual(T.height_for_volume(100), 1.08, 2)
-        self.assertAlmostEqual(T.height_for_volume(1000), 10.82, 2)
+    def test_06_preparer_dilution_de_ct(self):
+        print(f"\nSOLUTION DEPART {self.tube_ct_mere} \n")
+        fille0 = diluer(self.tube_ct_mere, 10, volume_final=300, tag='la_fille', comment= True)
+        res = preparer(200, 35, self.tube_ct_mere, comment=True)
+        print()
+        print(res)
 
-    def test_for_rounded(self):
-        T = RoundedBottomTube(50, 11)
-        self.assertAlmostEqual(T.height_for_volume(500), 7.09, 2)
-        self.assertAlmostEqual(T.height_for_volume(5000), 54.45, 2)
+    def test_08_dilution_ct_en_fille(self):
+        print(self.tube_ct_mere)
+        fille0 = diluer(self.tube_ct_mere, 10, volume_final=300, tag='la_fille', comment= True)
+        print(fille0)
 
-    def test_for_measured_test(self):
-        from measured_values_for_tubes import measures_for_1_5ml_Eppendorf
+    def test_10_dilution_ct_par_defaut(self):
+        print(self.tube_ct_mere)
+        fille0 = diluer(self.tube_ct_mere, 10)
+        print(fille0)
 
-        T = reagents.TubeAsMeasuredVolumes(measures_for_1_5ml_Eppendorf)
-        print("volume max", T.max_volume)
-        for vol in [100, 200, 300, 1000, 1490]:
-            print(vol, T.height_for_volume(vol))
-        self.assertAlmostEqual(T.height_for_volume(300), 16, 2)
-        self.assertAlmostEqual(T.height_for_volume(1490), 32, 2)
+    def test_20_dilution(self):
+        preparer(200, 15, self.tube_as_cc)
+
+    def test_30_dilution(self):
+        preparer(200, 15, self.tube_ct_mere, comment=True)
+
+    # self.assertAlmostEqual(T.height_for_volume(3000), 38.20, 2)
+    # self.assertAlmostEqual(T.height_for_volume(500), 6.37, 2)
 
 if __name__ == '__main__':
     unittest.main()
