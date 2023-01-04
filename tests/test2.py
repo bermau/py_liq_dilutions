@@ -16,8 +16,8 @@ class MyTestCase(unittest.TestCase):
     def test_04_preparer_dilution_de_ct_imposant_dilutions(self):
         print(f"\nSOLUTION DEPART {self.tube_ct_mere} \n")
         res = preparer(220, 35, self.tube_ct_mere, n_dil=3, lst_imposed_dil=[[100, 200], [150, 210]], comment=True)
-        print()
-        print(res)
+        for item in res:
+            print(item)
 
     def test_06_preparer_dilution_de_ct(self):
         print(f"\nSOLUTION DEPART {self.tube_ct_mere} \n")

@@ -122,18 +122,24 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
                 if i < len(lst_imposed_dil):
                     print("\ndilution imposée", i + 1)
                     print(f"   on dilue au 1/{lst_imposed_dil[i][0]} en volume de {lst_imposed_dil[i][1]} µl")
-
-                    retour_tube = diluer(tube_en_cours_de_dil, dilution=lst_imposed_dil[i][0],
+                    data_tube = diluer(tube_en_cours_de_dil, dilution=lst_imposed_dil[i][0],
                                          volume_final=lst_imposed_dil[i][1],
-                                         tag="imposé" + str(i + 1), comment=True)
-
-                    list_dil.append(retour_tube)
-                    print(retour_tube['tube_fille'].describe())
-
-                    tube_en_cours_de_dil = retour_tube['tube_fille']
+                                         tag="imposé_" + str(i + 1), comment=True)
+                    list_dil.append(data_tube)
+                    print(data_tube['tube_fille'].describe())
+                    tube_en_cours_de_dil = data_tube['tube_fille']
                 else:
-                    list_dil.append("Et il reste une dilution ! ")
-
+                    produit_des_dilutions = 1
+                    dils = [item[0] for item in lst_imposed_dil]
+                    for dil in dils:
+                        produit_des_dilutions *= dil
+                    dilution_restante = dilution / produit_des_dilutions
+                    print(f"\nLe produit des dilutions imposées est {produit_des_dilutions}. "
+                          f"Il reste une dilution au {dilution_restante}")
+                    data_last_tube = diluer(tube_en_cours_de_dil, dilution=dilution_restante,
+                                       volume_final=vf,
+                                       tag="calculé_" + str(i + 1), comment=True)
+                    list_dil.append(data_last_tube)
         else:
             # N dilutions successives identiques
             if comment:
@@ -153,5 +159,7 @@ if __name__ == '__main__':
     # print()
     # preparer(800, 35, tube_ct_mere, n_dil=3, comment=True)
     # print()
-    preparer(800, 35, tube_ct_mere, n_dil=3, lst_imposed_dil=[[10, 550], [10, 120]], comment=True)
+    ret = preparer(800, 35, tube_ct_mere, n_dil=3, lst_imposed_dil=[[10, 550], [10, 120]], comment=True)
     # preparer(800, 35, tube_ct_mere, n_dil=3, lst_imposed_dil=[[100, 550], [50, 120]], comment=True)
+    for item in ret :
+        print(item)
