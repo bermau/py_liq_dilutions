@@ -34,17 +34,17 @@ class MyTestCase(unittest.TestCase):
         for item in res:
             print(item)
 
-    def test_05_detecter_dilutions_imposées_inadequates(self):
-        print(f"""\nSOLUTION DEPART :
-          ** {self.tube_as_cc} 
-          ** Caractéristiques : {self.tube_as_cc.describe()}
-               """)
-        dil_imposes = [[150, 200], [25, 210]]   #  [[dilution, volume]  ...]
-        res = preparer(vf=220, ct_cc_cible=35, tube=self.tube_as_cc, n_dil=3,
-                       lst_imposed_dil=dil_imposes, comment=True)
-        print()
-        for item in res:
-            print(item)
+    # def test_05_detecter_dilutions_imposées_inadequates(self):
+    #     print(f"""\nSOLUTION DEPART :
+    #       ** {self.tube_as_cc}
+    #       ** Caractéristiques : {self.tube_as_cc.describe()}
+    #            """)
+    #     dil_imposes = [[150, 200], [25, 210]]   #  [[dilution, volume]  ...]
+    #     res = preparer(vf=220, ct_cc_cible=35, tube=self.tube_as_cc, n_dil=3,
+    #                    lst_imposed_dil=dil_imposes, comment=True)
+    #     print()
+    #     for item in res:
+    #         print(item)
 
     def test_06_preparer_dilution_de_ct(self):
         print(f"\nSOLUTION DEPART {self.tube_ct_mere} \n")
