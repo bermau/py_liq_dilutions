@@ -18,3 +18,20 @@ La fonction dilution est capable de gérer des dilutions imposées. Tout au moin
     ). 
   * protection contre les dilutions imposées supérieures à la dilution finale voulue. 
 
+## 23_01_utilisation
+Ajout d'exemples (3) réels
+
+## 23_01_bug_fix_solution_fille
+J'ai trouvé un bug : 
+
+Dilution 1
+Prélever 13.14 µl de solution mère <Aliquot, vol : 500 contenant <Liquid : CephVRS_GAI/VAL>>, ajouter 986.86 de diluent 
+En sortie on aura le tube : <Aliquot, vol : 1000 contenant <Liquid : CephVRS_GAI/VAL/dil_1>>
+Dilution 2
+Prélever 13.14 µl de solution mère <Aliquot, vol : 500 contenant <Liquid : CephVRS_GAI/VAL>>, ajouter 986.86 de diluent 
+En sortie on aura le tube : <Aliquot, vol : 1000 contenant <Liquid : CephVRS_GAI/VAL/dil_2>>
+
+
+La seconde occurence de 500 contenant <Liquid : CephVRS_GAI/VAL>> est fausse (il faut écrire : <Liquid : CephVRS_GAI/VAL/dil_1>)
+
+explication : le bug n'existe plus si on utilise l'argument `lst_imposed_dil=dil_imposes`.
