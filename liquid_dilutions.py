@@ -104,7 +104,8 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
     dilution_elementaire = dilution ** (1 / n_dil)
 
     if comment:
-        print(f"Préparer une dilution finale au : {nice(dilution)}")
+        print(f"Préparer {vf} µl à concentration finale de {ct_cc_cible}, par une dilution totale au : 1/{nice(dilution)}")
+
 
     if n_dil == 1:
         dico = diluer(tube, dilution=dilution, volume_final=vf, comment=True)
@@ -124,7 +125,7 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
 
             for i in range(n_dil):
                 if i < len(lst_imposed_dil):
-                    print("\nDilution imposée", i + 1)
+                    print(f"\nDilution imposée {i + 1} : ", end = '' )
                     print(f"   On dilue au 1/{lst_imposed_dil[i][0]} en volume de {lst_imposed_dil[i][1]} µl")
                     data_tube = diluer(tube_en_cours_de_dil, dilution=lst_imposed_dil[i][0],
                                          volume_final=lst_imposed_dil[i][1],
@@ -151,7 +152,7 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
             if comment:
                 print(f"Nous allons préparer {n_dil} dilutions au {nice(dilution_elementaire)}")
             for i in range(0, n_dil):
-                print("Dilution", i + 1)
+                print(f"\nDilution {i + 1} : ", end='')
                 dico = diluer(tube_en_cours_de_dil, dilution=dilution_elementaire, tag='dil_' + str(i + 1), volume_final=vf,
                               comment=True)
                 tube_en_cours_de_dil = dico['tube_fille']
@@ -174,6 +175,7 @@ if __name__ == '__main__':
     # print()
     ret = preparer(800, 35, tube_ct_mere, n_dil=3, lst_imposed_dil=[[10, 550], [10, 120]], comment=True)
     # preparer(800, 35, tube_ct_mere, n_dil=3, lst_imposed_dil=[[100, 550], [50, 120]], comment=True)
+    print()
     for item in ret :
         print(item)
 
