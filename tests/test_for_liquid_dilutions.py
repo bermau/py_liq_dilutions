@@ -2,13 +2,14 @@ import unittest
 from liquid_dilutions import *
 
 
+
 class MyTestCase(unittest.TestCase):
 
     def setUp(self) -> None:
         self.mater = Liquid("COVID")
         self.diluent = Liquid("Diluent")
-        self.tube_as_cc = Aliquot(mater, volume=200, concentration=15432)
-        self.tube_ct_mere = Aliquot(mater, volume=500, ct=20.5, unit_type='ct')
+        self.tube_as_cc = Aliquot(self.mater, volume=200, concentration=15432)
+        self.tube_ct_mere = Aliquot(self.mater, volume=500, ct=20.5, unit_type='ct')
 
     def test_presentation(self):
         print(self.diluent)

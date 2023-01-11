@@ -7,6 +7,12 @@ diluent = Liquid("Diluent")
 tube_as_cc = Aliquot(mater, 200, 154)
 tube_ct_mere = Aliquot(mater, 500, ct=20.5, unit_type='ct')
 
+# mater = Liquid("COVID_Pos")
+# diluent = Liquid("Diluent")
+tube1 = Aliquot(mater, 210, 154)
+tube2 = Aliquot(diluent, 1100, 0)
+
+
 
 print(tube_as_cc)
 

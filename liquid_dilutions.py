@@ -46,6 +46,9 @@ class Aliquot:
         if self.unit_type == "ct":
             return f"<Aliquot, vol : {self.volume} contenant {self.liquid}>"
 
+    def short(self):
+            return f"{self.liquid}>"
+
     def describe(self):
         common = f"Tube de type {self.unit_type}"
         if self.unit_type == 'ct':
@@ -53,10 +56,6 @@ class Aliquot:
         else:
             return common + f", CC : {self.concentration}"
 
-mater = Liquid("COVID_Pos")
-diluent = Liquid("Diluent")
-tube1 = Aliquot(mater, 210, 154)
-tube2 = Aliquot(diluent, 1100, 0)
 
 
 # # Dilution d'un liquide aliquoté dans un tube
@@ -73,7 +72,7 @@ def diluer(tube: Aliquot, dilution=5, volume_final=100, tag='fille', comment=Fal
         tube_fille = Aliquot(liquid_fille, volume_final, ct=tube.ct + math.log(dilution, 2), unit_type='ct')
 
     if comment:
-        print(f"Prélever {nice(source_v)} µl de solution mère {tube}, ajouter {nice(diluent_v)} de diluent ")
+        print(f"Prélever {nice(source_v)} µl de {tube.short()}, ajouter {nice(diluent_v)} de diluent ")
         print(f"En sortie on aura le tube : {tube_fille}")
 
     return {'vol_mere': source_v, 'vol_diluent': diluent_v, 'tube_fille': tube_fille}
@@ -108,11 +107,12 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
         print(f"Préparer une dilution finale au : {nice(dilution)}")
 
     if n_dil == 1:
-        dico = diluer(tube1, dilution=dilution, volume_final=vf, comment=True)
+        dico = diluer(tube, dilution=dilution, volume_final=vf, comment=True)
         return [dico]
 
     elif n_dil > 1:
         list_dil = []
+        tube_en_cours_de_dil = tube
         if lst_imposed_dil:
             # Verifier n_dil sup a liste
             assert len(lst_imposed_dil) < n_dil
@@ -120,7 +120,7 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
             if comment:
                 print("Nous allons préparer les dilutions imposées puis les libres")
             # retour_tube = None  # {} # contiendra la succession des dilutions
-            tube_en_cours_de_dil = tube
+
 
             for i in range(n_dil):
                 if i < len(lst_imposed_dil):
@@ -152,15 +152,22 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
                 print(f"Nous allons préparer {n_dil} dilutions au {nice(dilution_elementaire)}")
             for i in range(0, n_dil):
                 print("Dilution", i + 1)
-                dico = diluer(tube, dilution=dilution_elementaire, tag='dil_' + str(i + 1), volume_final=vf,
+                dico = diluer(tube_en_cours_de_dil, dilution=dilution_elementaire, tag='dil_' + str(i + 1), volume_final=vf,
                               comment=True)
+                tube_en_cours_de_dil = dico['tube_fille']
                 list_dil.append(dico)
 
         return list_dil
 
 
 if __name__ == '__main__':
-    tube_ct_mere = Aliquot(mater, 500, ct=20.5, unit_type='ct')
+
+    mater = Liquid("COVID_Pos")
+    # diluent = Liquid("Diluent")
+    # tube1 = Aliquot(mater, 210, 154)
+    # tube2 = Aliquot(diluent, 1100, 0)
+
+    tube_ct_mere = Aliquot(mater, volume=500, ct=20.5, unit_type='ct')
     # preparer(200, 35, tube_ct_mere, comment=True)
     # print()
     # preparer(800, 35, tube_ct_mere, n_dil=3, comment=True)
@@ -169,3 +176,5 @@ if __name__ == '__main__':
     # preparer(800, 35, tube_ct_mere, n_dil=3, lst_imposed_dil=[[100, 550], [50, 120]], comment=True)
     for item in ret :
         print(item)
+
+    input("lire...")
