@@ -8,7 +8,7 @@ L'erreur d'évolution des CT dans le cas de dilution de CT est due au fait que l
 Fixed : Evolution des CT correcte. 
    Reste à créer la dernière dilution.
 
-je merge sur main (même si l'objectif est incomplet).
+Je merge sur main (même si l'objectif est incomplet).
 
 ## 23_01_forcer_premieres_dilutions_suite
 La fonction dilution est capable de gérer des dilutions imposées. Tout au moins pur les tubes exprimés en CT.
@@ -31,8 +31,15 @@ Dilution 2
 Prélever 13.14 µl de solution mère <Aliquot, vol : 500 contenant <Liquid : CephVRS_GAI/VAL>>, ajouter 986.86 de diluent 
 En sortie on aura le tube : <Aliquot, vol : 1000 contenant <Liquid : CephVRS_GAI/VAL/dil_2>>
 
-La seconde occurence de 500 contenant <Liquid : CephVRS_GAI/VAL>> est fausse (il faut écrire : <Liquid : CephVRS_GAI/VAL/dil_1>)
+La seconde occurrence de 500 contenant <Liquid : CephVRS_GAI/VAL>> est fausse (il faut écrire : <Liquid : CephVRS_GAI/VAL/dil_1>)
 
-explication : le bug n'existe plus si on utilise l'argument `lst_imposed_dil=dil_imposes`.
+Explication : le bug n'existe plus si on utilise l'argument `lst_imposed_dil=dil_imposes`.
 MERGED sur main
 
+## 23_01_verification_exemples
+Je vais reprendre mes 3 exemples pour bien les présenter. J'ai amélioré la présentation. Je merged sur main.
+
+
+## 23_02_lors_pcr3
+Les rapports sont formatés sous forme de petits tableaux de dilution. Le formatage est assez mal réalisé, mais le 
+résultat est satisfaisant. 
