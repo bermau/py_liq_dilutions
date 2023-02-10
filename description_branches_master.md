@@ -35,3 +35,4 @@ La seconde occurence de 500 contenant <Liquid : CephVRS_GAI/VAL>> est fausse (il
 
 explication : le bug n'existe plus si on utilise l'argument `lst_imposed_dil=dil_imposes`.
 MERGED sur main
+

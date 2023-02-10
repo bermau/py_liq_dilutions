@@ -7,7 +7,7 @@ diluent = Liquid("UTM")
 
 tube_ct_mere = Aliquot(mater, volume=500, ct=15, unit_type='ct')
 
-# On a un CT à 20,5 et on veux l'amener vers 33
+# On a un CT à 20,5 et on veut l'amener vers 33
 
 
 print(f"""\nSOLUTION DEPART :

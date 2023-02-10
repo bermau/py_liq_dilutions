@@ -23,9 +23,16 @@ class Liquid:
 
     def __repr__(self):
         if self.tag:
-            return f"<Liquid : {self.name}/{self.tag}>"
+            return f"<Liquid: {self.name}/{self.tag}>"
         else:
-            return f"<Liquid : {self.name}>"
+            return f"<Liquid: {self.name}>"
+
+    def __str__(self):
+        """La __str__ est ce qui est utilisé par print"""
+        if self.tag:
+            return f"{self.name}/{self.tag}"
+        else:
+            return f"{self.name}"
 
 
 class Aliquot:
@@ -46,8 +53,14 @@ class Aliquot:
         if self.unit_type == "ct":
             return f"<Aliquot, vol : {self.volume} contenant {self.liquid}>"
 
+    def __str__(self):
+        if self.unit_type == "cc":
+            return f"{self.volume} µl {self.liquid}, cc={self.concentration}"
+        if self.unit_type == "ct":
+            return f"{self.volume} µl {self.liquid}, CT={self.ct}"
+
     def short(self):
-            return f"{self.liquid}>"
+        return f"{self.liquid}>"
 
     def describe(self):
         common = f"Tube de type {self.unit_type}"
@@ -56,6 +69,8 @@ class Aliquot:
         else:
             return common + f", CC : {self.concentration}"
 
+    def simple(self):
+        return self.__str__()
 
 
 # # Dilution d'un liquide aliquoté dans un tube
@@ -70,10 +85,14 @@ def diluer(tube: Aliquot, dilution=5, volume_final=100, tag='fille', comment=Fal
         tube_fille = Aliquot(liquid_fille, volume_final, concentration=tube.concentration / dilution, unit_type='cc')
     elif tube.unit_type == 'ct':
         tube_fille = Aliquot(liquid_fille, volume_final, ct=tube.ct + math.log(dilution, 2), unit_type='ct')
-
+    formatage = 2
     if comment:
-        print(f"Prélever {nice(source_v)} µl de {tube.short()}, ajouter {nice(diluent_v)} de diluent ")
-        print(f"En sortie on aura le tube : {tube_fille}")
+        if formatage == 1:
+            print(f"Prélever {nice(source_v)} µl de {tube.short()}, ajouter {nice(diluent_v)} de diluent ")
+            print(f"En sortie on aura le tube : {tube_fille}")
+        elif formatage == 2:
+            print(Formater().formater("Liquide ", tube.short(), "diluent", ""))
+            print(Formater().formater("Volume µl ", nice(source_v), nice(diluent_v), tube_fille.simple()))
 
     return {'vol_mere': source_v, 'vol_diluent': diluent_v, 'tube_fille': tube_fille}
 
@@ -92,7 +111,7 @@ P200 = Pipette("Pip 200", 10, 200)
 def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False):
     """
     Obtenir un volume vf à concentration finale de CT ct_cc_cible à partir d'un Aliquot en tube dont le CT est connu
-    lst_imposed_dil est une liste de dilutions pour forcer les première dilutions
+    lst_imposed_dil est une liste de dilutions pour forcer les premières dilutions
     """
     # produit
     dilution = 1
@@ -104,8 +123,7 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
     dilution_elementaire = dilution ** (1 / n_dil)
 
     if comment:
-        print(f"Préparer {vf} µl à concentration finale de {ct_cc_cible}, par une dilution totale au : 1/{nice(dilution)}")
-
+        print(f"Préparer {vf} µl à conc. finale de {ct_cc_cible}, par une dilution totale au : 1/{nice(dilution)}")
 
     if n_dil == 1:
         dico = diluer(tube, dilution=dilution, volume_final=vf, comment=True)
@@ -122,14 +140,13 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
                 print("Nous allons préparer les dilutions imposées puis les libres")
             # retour_tube = None  # {} # contiendra la succession des dilutions
 
-
             for i in range(n_dil):
                 if i < len(lst_imposed_dil):
-                    print(f"\nDilution imposée {i + 1} : ", end = '' )
+                    print(f"\nDilution imposée {i + 1} : ", end='')
                     print(f"   On dilue au 1/{lst_imposed_dil[i][0]} en volume de {lst_imposed_dil[i][1]} µl")
                     data_tube = diluer(tube_en_cours_de_dil, dilution=lst_imposed_dil[i][0],
-                                         volume_final=lst_imposed_dil[i][1],
-                                         tag="imposé_" + str(i + 1), comment=True)
+                                       volume_final=lst_imposed_dil[i][1],
+                                       tag="imposé_" + str(i + 1), comment=True)
                     list_dil.append(data_tube)
                     print(data_tube['tube_fille'].describe())
                     tube_en_cours_de_dil = data_tube['tube_fille']
@@ -144,21 +161,30 @@ def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False
                           f"Il reste une dilution au {dilution_restante}\n")
                     assert produit_des_dilutions < dilution, "Dilution imposées trop importantes"
                     data_last_tube = diluer(tube_en_cours_de_dil, dilution=dilution_restante,
-                                       volume_final=vf,
-                                       tag="calculé_" + str(i + 1), comment=True)
+                                            volume_final=vf,
+                                            tag="calculé_" + str(i + 1), comment=True)
                     list_dil.append(data_last_tube)
         else:
             # N dilutions successives identiques
             if comment:
                 print(f"Nous allons préparer {n_dil} dilutions au {nice(dilution_elementaire)}")
             for i in range(0, n_dil):
-                print(f"\nDilution {i + 1} : ", end='')
-                dico = diluer(tube_en_cours_de_dil, dilution=dilution_elementaire, tag='dil_' + str(i + 1), volume_final=vf,
+                print(f"\nDilution {i + 1} : " + "-" * Formater.long_tab + '|')
+                dico = diluer(tube_en_cours_de_dil, dilution=dilution_elementaire, tag='dil_' + str(i + 1),
+                              volume_final=vf,
                               comment=True)
                 tube_en_cours_de_dil = dico['tube_fille']
                 list_dil.append(dico)
 
         return list_dil
+
+
+class Formater:
+    format1 = "|{:10}|{:>25}  |{:>15}  |{:>41}  |"
+    long_tab = 88  # Longueur de la chaine de tirets
+
+    def formater(self, a, b, c, d):
+        return Formater.format1.format(str(a), str(b), str(c), str(d))
 
 
 if __name__ == '__main__':
@@ -176,7 +202,7 @@ if __name__ == '__main__':
     ret = preparer(800, 35, tube_ct_mere, n_dil=3, lst_imposed_dil=[[10, 550], [10, 120]], comment=True)
     # preparer(800, 35, tube_ct_mere, n_dil=3, lst_imposed_dil=[[100, 550], [50, 120]], comment=True)
     print()
-    for item in ret :
+    for item in ret:
         print(item)
 
     input("lire...")
