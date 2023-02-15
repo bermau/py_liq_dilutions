@@ -43,3 +43,7 @@ Je vais reprendre mes 3 exemples pour bien les présenter. J'ai amélioré la pr
 ## 23_02_lors_pcr3
 Les rapports sont formatés sous forme de petits tableaux de dilution. Le formatage est assez mal réalisé, mais le 
 résultat est satisfaisant. 
+
+## 23_02_lors_pcr4
+J'ai besoin d'un outil pour corriger mes CT initiaux. Je crée une fonction dans `liquid_dilutions.py` et une 
+application dans `trouver_cc_initiale.py`. J'ai créé une fonction `calcul_concentration_initiale`.

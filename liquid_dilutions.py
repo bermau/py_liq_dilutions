@@ -73,6 +73,8 @@ class Aliquot:
         return self.__str__()
 
 
+
+
 # # Dilution d'un liquide aliquoté dans un tube
 
 def diluer(tube: Aliquot, dilution=5, volume_final=100, tag='fille', comment=False):
@@ -106,6 +108,13 @@ class Pipette:
 
 P1000 = Pipette("Pip 1000", 100, 900)
 P200 = Pipette("Pip 200", 10, 200)
+
+
+def calcul_concentration_initiale(dilution, measured_concentration):
+    """On a mesuré une Aliquot à une concentration ou un CT de N.
+    Cette mesure a été réalisée sur un échantillon dilué au N.
+    Quelle était la concentration initiale"""
+    return measured_concentration - math.log(dilution,2)
 
 
 def preparer(vf, ct_cc_cible, tube, n_dil=1, lst_imposed_dil=None, comment=False):
