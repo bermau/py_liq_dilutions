@@ -8,7 +8,7 @@ L'erreur d'évolution des CT dans le cas de dilution de CT est due au fait que l
 Fixed : Evolution des CT correcte. 
    Reste à créer la dernière dilution.
 
-Je merge sur main (même si l'objectif est incomplet).
+23_01_forcer_premieres_dilutions : je merge sur main (même si l'objectif est incomplet).
 
 ## 23_01_forcer_premieres_dilutions_suite
 La fonction dilution est capable de gérer des dilutions imposées. Tout au moins pur les tubes exprimés en CT.
@@ -42,8 +42,12 @@ Je vais reprendre mes 3 exemples pour bien les présenter. J'ai amélioré la pr
 
 ## 23_02_lors_pcr3
 Les rapports sont formatés sous forme de petits tableaux de dilution. Le formatage est assez mal réalisé, mais le 
-résultat est satisfaisant. 
+résultat est satisfaisant.
 
 ## 23_02_lors_pcr4
 J'ai besoin d'un outil pour corriger mes CT initiaux. Je crée une fonction dans `liquid_dilutions.py` et une 
 application dans `trouver_cc_initiale.py`. J'ai créé une fonction `calcul_concentration_initiale`.
+Mergé 
+
+## 23_02_add_a_lab_printer
+J'ai ajouté une impression d'étiquettes sur l'imprimante code barre (imprimante de modèle PD Series de chez Intermec).
