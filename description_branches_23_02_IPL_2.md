@@ -53,4 +53,5 @@ Mergé
 J'ai ajouté une impression d'étiquettes sur l'imprimante code barre (imprimante de modèle PD Series de chez Intermec).
 
 ## 23_02_IPL_2
-Le but est d'améliorer la génération étiquettes... voire de créer une pétite application graphique.
+Amélioration de la gestion des étiquttes et ajout d'une interface graphique. Permet d'imprimer sur toute 
+imprimante acceptant IPL. 
