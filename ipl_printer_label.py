@@ -1,5 +1,6 @@
 from local import my_printer
 import subprocess
+from datetime import datetime
 
 sNbreEtq = 1
 
@@ -8,6 +9,7 @@ sId1 = "25121245"
 sId2 = "98"
 sDatNaissSex = "31/12/1964 M"
 sDatPrel = "15/02/2023"
+now = datetime.now().strftime("%Y/%m/%d %H:%M")
 
 # <STX>H03;o55,565;b1;f2;h01;w01;c34;d3," + [sIdIndex]+ ";<ETX>
 # /*<STX>H02;o180,565;b0;f2;h01;w01;c34;d3,{sId2};<ETX> */
@@ -19,7 +21,7 @@ msg_mispl = f"""
 <STX>H04;o315,520;b0;f2;h01;w01;c34;d3,{sNomPrenom};<ETX>
 
 <STX>H05;o315,455;b0;f2;h02;w01;c2;d3,{sDatNaissSex};<ETX>
-<STX>H06;o315,415;b0;f2;h01;w01;c30;d3,{sDatPrel};<ETX>
+<STX>H06;o315,415;b0;f2;h01;w01;c30;d3,{now};<ETX>
 
 /* ligne */
 <STX>L07;o315,380;f2;l1300;w4<ETX>
