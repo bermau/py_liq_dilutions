@@ -22,10 +22,11 @@ def print_labels():
     else:
         now = alt_field_for_date.get()
 
+
     ipl_format_for_Epp_1_5_ml = f"""
     <STX><ESC>C<ETX><STX><ESC>P<ETX><STX>E5;F5;<ETX>
     <STX>H01;o315,565;b0;f2;h01;w01;c34;d3,{field_1};<ETX>
-
+    <STX>H02;o55,565;b1;f2;h01;w01;c31;d3,{field_2};<ETX>
     <STX>H04;o315,520;b0;f2;h01;w01;c34;d3,{field_3};<ETX>
 
     <STX>H05;o315,455;b0;f2;h02;w01;c2;d3,{field_4};<ETX>
