@@ -1,10 +1,14 @@
 import subprocess
 from datetime import datetime
+import tempfile
+import os
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+
 from local import my_printer, printer_list
 
+print(f"Répertoire courant : {os.getcwd()}")
 # Ce programme imprime de petites étiquettes pour des tubes de type Eppendorf 1.5 ml
 # L'utilisateur dispose de 4 champs.
 # L'utilisateur peut décider d'imprimer la date d'impression ou un cinquième champ.
@@ -24,32 +28,32 @@ def print_labels():
 
 
     ipl_format_for_Epp_1_5_ml = f"""
-    <STX><ESC>C<ETX><STX><ESC>P<ETX><STX>E5;F5;<ETX>
-    <STX>H01;o315,565;b0;f2;h01;w01;c34;d3,{field_1};<ETX>
-    <STX>H02;o55,565;b1;f2;h01;w01;c31;d3,{field_2};<ETX>
-    <STX>H04;o315,520;b0;f2;h01;w01;c34;d3,{field_3};<ETX>
+<STX><ESC>C<ETX><STX><ESC>P<ETX><STX>E5;F5;<ETX>
+<STX>H01;o315,565;b0;f2;h01;w01;c34;d3,{field_1};<ETX>
+<STX>H02;o55,565;b1;f2;h01;w01;c31;d3,{field_2};<ETX>
+<STX>H04;o315,520;b0;f2;h01;w01;c34;d3,{field_3};<ETX>
 
-    <STX>H05;o315,455;b0;f2;h02;w01;c2;d3,{field_4};<ETX>
-    <STX>H06;o315,415;b0;f2;h01;w01;c30;d3,{now};<ETX>
+<STX>H05;o315,455;b0;f2;h02;w01;c2;d3,{field_4};<ETX>
+<STX>H06;o315,415;b0;f2;h01;w01;c30;d3,{now};<ETX>
 
-    /* ligne */
-    <STX>L07;o315,380;f2;l1300;w4<ETX>
-    # <STX>B10;o125,115;c2;f3;h160;w03;i0;d3," + ";<ETX>
+/* ligne */
+<STX>L07;o315,380;f2;l1300;w4<ETX>
+# <STX>B10;o125,115;c2;f3;h160;w03;i0;d3," + ";<ETX>
 
-    /* afficher ALIQUOT BIO MOL   */
-    <STX>H14;o315,300;b1;f2;h01;w01;c31;d3,BIOMOL;<ETX>
+/* afficher ALIQUOT BIO MOL   */
+<STX>H14;o315,300;b1;f2;h01;w01;c31;d3,BIOMOL;<ETX>
 
-    /* Mini étiquette pour couvercle */
-    <STX>H16;o315,100;b0;f2;h01;w01;c31;d3,{field_1};<ETX>
-    <STX>H17;o315,65;b0;f2;h01;w01;c31;d3,{field_3};<ETX>
-    <STX>R<ETX><STX><ESC>E5<CAN><ETX><STX><RS>{nb_labels}<ETB><ETX>
-    """
+/* Mini étiquette pour couvercle */
+<STX>H16;o315,100;b0;f2;h01;w01;c31;d3,{field_1};<ETX>
+<STX>H17;o315,65;b0;f2;h01;w01;c31;d3,{field_3};<ETX>
+<STX>R<ETX><STX><ESC>E5<CAN><ETX><STX><RS>{nb_labels}<ETB><ETX>
+"""
 
-    with open("etiq.txt", 'w') as f:
-        f.writelines(ipl_format_for_Epp_1_5_ml)
-
+    with tempfile.NamedTemporaryFile(mode='w', delete=False) as temp_file:
+        temp_file.writelines(ipl_format_for_Epp_1_5_ml)
+        print(f"Fin d'écriture dans {temp_file.name}")
     try:
-        subprocess.check_output(["copy", ".\etiq.txt", selected_printer.get()], shell=True)
+        subprocess.check_output(["copy", temp_file.name, selected_printer.get()], shell=True)
         messagebox.showinfo("Impression réussie", "Les étiquettes ont été imprimées avec succès.")
     except Exception as e:
         messagebox.showerror("Erreur d'impression", f"Une erreur est survenue lors de l'impression : {str(e)}")
@@ -126,7 +130,7 @@ label_nb_labels = ttk.Label(last_frame, text="Nombre d'étiquettes à imprimer :
 label_nb_labels.grid(row= 0, column= 0)
 
 entry_nb_labels = ttk.Entry(last_frame, width=5)
-entry_nb_labels.insert(0, "3")  # Valeur par défaut
+entry_nb_labels.insert(0, "1")  # Valeur par défaut
 entry_nb_labels.grid(row= 0, column= 1, sticky='W')
 
 # Bouton d'impression
@@ -137,4 +141,3 @@ print_button.grid(row= 1, column = 1)
 
 root.mainloop()
 
-input("")
