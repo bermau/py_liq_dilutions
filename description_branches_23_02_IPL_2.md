@@ -38,7 +38,7 @@ MERGED sur main
 
 ## 23_01_verification_exemples
 Je vais reprendre mes 3 exemples pour bien les présenter. J'ai amélioré la présentation. Je merged sur main.
-# Branches
+
 
 ## 23_02_lors_pcr3
 Les rapports sont formatés sous forme de petits tableaux de dilution. Le formatage est assez mal réalisé, mais le 
