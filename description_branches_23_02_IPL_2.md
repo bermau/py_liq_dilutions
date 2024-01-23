@@ -38,7 +38,7 @@ MERGED sur main
 
 ## 23_01_verification_exemples
 Je vais reprendre mes 3 exemples pour bien les présenter. J'ai amélioré la présentation. Je merged sur main.
-
+# Branches
 
 ## 23_02_lors_pcr3
 Les rapports sont formatés sous forme de petits tableaux de dilution. Le formatage est assez mal réalisé, mais le 
@@ -53,5 +53,5 @@ Mergé
 J'ai ajouté une impression d'étiquettes sur l'imprimante code barre (imprimante de modèle PD Series de chez Intermec).
 
 ## 23_02_IPL_2
-Amélioration de la gestion des étiquttes et ajout d'une interface graphique. Permet d'imprimer sur toute 
+Amélioration de la gestion des étiquettes et ajout d'une interface graphique. Permet d'imprimer sur toute 
 imprimante acceptant IPL. 
