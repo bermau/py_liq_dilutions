@@ -1,5 +1,6 @@
 # py_liq_dilutions
 functions to automate dilutions of liquids
 
-Projet embryonnaire !
+Embryonic project !
+
 Still working on it !
